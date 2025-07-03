@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Page B{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Page B - Download</h1>
+
+    <button id="download-btn" class="btn btn-primary">Download</button>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.getElementById('download-btn').addEventListener('click', () => {
+            fetch('{{ url_generator.generate('download') }}', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.fileUrl) {
+                        window.location.href = data.fileUrl;
+                    } else {
+                        alert('Error occurred');
+                    }
+                })
+                .catch(() => alert('An error occurred.'));
+        });
+    </script>
+{% endblock %}

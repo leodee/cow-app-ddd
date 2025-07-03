@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User Activity Statistics{% endblock %}
+
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">User Activity Statistics</h1>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="username" class="form-control" placeholder="Username" value="{{ username }}">
+        </div>
+        <div class="col-md-3">
+            <select name="action" class="form-select">
+                <option value="">All Actions</option>
+                {% for key, label in available_actions %}
+                    <option value="{{ key }}" {% if action == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="dateInput" name="date" class="form-control" placeholder="Date" value="{{ date }}">
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ url_generator.generate('statistics') }}" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Action</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.username }}</td>
+                <td>{{ available_actions[event.action] ?? event.action }}</td>
+                <td>{{ event.createdAt }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No events found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#dateInput", {
+            dateFormat: "Y-m-d",
+            allowInput: true
+        });
+    </script>
+{% endblock %}

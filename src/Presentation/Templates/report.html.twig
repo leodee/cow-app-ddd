@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Activity Report{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Activity Report</h1>
+
+    <canvas id="activityChart" height="300"></canvas>
+
+    <table class="table table-bordered table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Page A Views</th>
+            <th>Page B Views</th>
+            <th>Buy a Cow Clicks</th>
+            <th>Download Clicks</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in table_data %}
+            <tr>
+                <td>{{ row.date }}</td>
+                <td>{{ row.page_a_views }}</td>
+                <td>{{ row.page_b_views }}</td>
+                <td>{{ row.buy_cow_clicks }}</td>
+                <td>{{ row.download_clicks }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('activityChart').getContext('2d');
+
+        const labels = {{ graph_data|map(r => r.date)|json_encode|raw }};
+        const pageAData = {{ graph_data|map(r => r.page_a_views)|json_encode|raw }};
+        const pageBData = {{ graph_data|map(r => r.page_b_views)|json_encode|raw }};
+        const buyCowData = {{ graph_data|map(r => r.buy_cow_clicks)|json_encode|raw }};
+        const downloadData = {{ graph_data|map(r => r.download_clicks)|json_encode|raw }};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Page A Views',
+                        data: pageAData,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Page B Views',
+                        data: pageBData,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Buy a Cow Clicks',
+                        data: buyCowData,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Download Clicks',
+                        data: downloadData,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

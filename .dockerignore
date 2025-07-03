@@ -1,0 +1,25 @@
+# Everything you don't need in Docker context
+
+.git
+.gitignore
+.idea
+docker-compose.yml
+Dockerfile
+README.md
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Local dependencies
+vendor
+
+# Tests, coverage, documentation
+/tests
+/coverage
+*.md
+
+# Local config
+.env
+*.sql
+*.sql.gz

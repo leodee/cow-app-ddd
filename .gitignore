@@ -1,0 +1,17 @@
+# Ignore PhpStorm project files
+.idea/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore vendor if you use Composer
+/vendor/
+
+# Ignore environment and config files (if applicable)
+.env
+.env.local
+
+# Ignore database dumps
+*.sql
+*.sql.gz

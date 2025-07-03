@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Page A{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Page A - Buy a Cow</h1>
+
+    <div id="buy-cow-section">
+        <button id="buy-cow-btn" class="btn btn-primary">Buy a cow</button>
+        <div id="thank-you-message" class="mt-2 text-success" style="display: none;">
+            Thank you!
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.getElementById('buy-cow-btn').addEventListener('click', () => {
+            fetch('{{ url_generator.generate('buy_cow') }}', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('buy-cow-btn').style.display = 'none';
+                        document.getElementById('thank-you-message').style.display = 'block';
+                    }
+                })
+                .catch(err => console.error(err));
+        });
+    </script>
+{% endblock %}
