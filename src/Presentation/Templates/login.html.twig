@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-        <form method="post" class="border p-4 rounded shadow" style="width: 300px;">
+        <form method="post" class="border p-4 rounded shadow" style="min-width: 300px; max-width: 400px; width: 100%;">
             <h1 class="mb-4 text-center">Login</h1>
             {% if flash_message %}
                 <div class="alert alert-danger">{{ flash_message }}</div>
@@ -20,7 +20,7 @@
                 <input id="password" type="password" name="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
-            <p class="mt-3 text-center"><a href="{{ url_generator.generate('register') }}">Register</a></p>
+            <p class="mt-3 text-center"><a href="{{ url_generator.generate('register') }}">Don't have an account? Register</a></p>
         </form>
     </div>
 {% endblock %}
